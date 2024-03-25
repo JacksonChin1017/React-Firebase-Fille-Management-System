@@ -1,8 +1,11 @@
 import { initializeApp } from "firebase/app";
 import firebase from 'firebase/compat/app';
+import {getFirestore, collection, serverTimestamp} from 'firebase/firestore'
 import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
+import 'firebase/compat/firestore';
+import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
+import {getStorage} from 'firebase/storage';
 
 
 
@@ -18,12 +21,16 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const firestore = getFirestore(app)
 
 export const database = {
-    users: firestore.collection('users'),
-    date: firebase.firestore.FieldValue.serverTimestamp(),
+    users: collection(firestore, 'users'),
+    date: serverTimestamp(),
 };
   
-  export const storage = firebase.storage();
-  
-  export const auth = firebase.auth();
+export const storage = getStorage();
+
+export const auth = getAuth(app);
+export const createUser = createUserWithEmailAndPassword;
+export const signInUser = signInWithEmailAndPassword;
+export const authState = onAuthStateChanged;

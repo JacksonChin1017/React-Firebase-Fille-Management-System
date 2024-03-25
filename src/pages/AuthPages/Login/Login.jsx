@@ -69,7 +69,7 @@ export const Login = () => {
             </Form.Group>
             <p className=" text-right d-flex align-items-center justify-content-end gap-2 ml-auto my-4">
               Not a Member?
-              <Link to="/signup" className="ml-2 text-decoration-none">
+              <Link to="/register" className="ml-2 text-decoration-none">
                 Register
               </Link>
             </p>

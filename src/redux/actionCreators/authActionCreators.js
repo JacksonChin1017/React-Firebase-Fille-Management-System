@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { auth, database } from "../../API/firebase";
+import { auth, database, signInUser, createUser, authState} from "../../API/firebase";
 import {userModel} from "../../models/users";
 import { RESET_USER, SET_USER } from "../actions/authActions";
 //import { RESET_FOLDERS_FILES } from "../actions/filefoldersActions";
@@ -16,8 +16,7 @@ const resetUser = () => ({
 export const registerUser =
   ({ name, email, password }, setError) =>
   (dispatch) => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
+      createUser(email, password)
       .then((user) => {
         setError("");
         const newUser = userModel(email, name, user.user.uid);
@@ -46,8 +45,7 @@ export const registerUser =
 export const loginUser =
   ({ email, password }, setError) =>
   (dispatch) => {
-    auth
-      .signInWithEmailAndPassword(email, password)
+      signInUser(email, password)
       .then(async (user) => {
         const usr = await database.users
           .where("uid", "==", user.user.uid)
@@ -60,7 +58,7 @@ export const loginUser =
   };
 
 export const getUser = () => (dispatch) => {
-  auth.onAuthStateChanged(function (user) {
+  authState(function (user) {
     if (user) {
       dispatch(
         setUser({
